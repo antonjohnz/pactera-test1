@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<bean id="jsonparser" class="com.pactera.test.JSONDataParser">
+		<constructor-arg ref="dataprocessor"/>
+		<constructor-arg ref="gson"/>
+	</bean>
+	<bean id="csvparser" class="com.pactera.test.CSVDataParser">
+		<constructor-arg ref="dataprocessor"/>
+	</bean>
+	
+	<bean id="dataprocessor" class="com.pactera.test.DataProcessor" scope="singleton">
+	</bean>
+	
+	<bean id="gson" class="com.google.gson.Gson" scope="singleton" >
+	</bean>
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<bean id="fridgeReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+
+        <!-- <property name="resource" value="file:./sample.csv" /> -->
+        <property name="resource" value="classpath:fridge.csv" />
+
+        <property name="linesToSkip" value="1" />
+
+        <property name="lineMapper">
+            <bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+
+                <property name="lineTokenizer">
+                    <bean class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+                        <property name="names" value="item,amount,unit,useBy" />
+                    </bean>
+                </property>
+
+                <property name="fieldSetMapper">
+                    <bean class="com.pactera.test.FridgeFieldSetMapper" />
+                </property>
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="fieldSetMapper"
+		class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
+		<property name="prototypeBeanName" value="fridge" />
+	</bean>
+
+	<bean id="fridge" class="com.pactera.test.model.Fridge"
+		scope="prototype" />
+		
+	<!-- Register the Customer.properties -->
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename" value="message" />
+	</bean>
+	
+	<bean
+	class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping" />
+
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+
+	
+	<bean id="fileValidator"
+	        class="com.pactera.test.FileUploadValidator" />
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix">
+			<value>/WEB-INF/views/</value>
+		</property>
+		<property name="suffix">
+			<value>.jsp</value>
+		</property>
+	</bean>
+		
+		
+</beans>

@@ -1,0 +1,17 @@
+This is an Pactera Test example application submitted by Antony John
+
+
+RUNNING THE APPLICATION:
+
+- Download and install JDK 7 (http://www.oracle.com/technetwork/java/javase/downloads/index.html). If you already have installed JDK 7, you can skip this step.
+- Download and install Maven 3 (http://maven.apache.org/download.html#Installation). If you have already installed Maven 3, you can skip this step.
+- You can run the application as an Java Application by run->Java Application from the MainApp Class
+- Or Deploy the web application .war on the local server (This is not completely designed / validated with error message - only basic workflow will work)
+- Eclipse with STS plugin - Project type is Spring MVC web application
+- Run command mvn clean install to get the war file
+- Start your browser and go to the location: http://localhost:8080/test
+
+RUNNING TESTS:
+
+- You can run unit tests by using this command: mvn test -P dev
+- You can run integration tests by using this command: mvn verify -P integration-test
